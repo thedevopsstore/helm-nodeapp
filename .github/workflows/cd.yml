@@ -53,4 +53,4 @@ jobs:
           chart-path: lwplabs-charts/nodeapp
           name: digital-nodeapp
           namespace: 'default'
-          values: image.tag=${{ github.run_id }}
+          values: image.tag=${{ github.run_id }},mongodb.dbpassword="welcome123"
