@@ -50,7 +50,7 @@ jobs:
           aws-region: us-east-2
           cluster-name: eks-cluster
           chart-repository: https://thedevopsstore.github.io/lwplabs-charts/
-          chart-path: .
+          chart-path: lwplabs-charts
           name: nodeapp
           namespace: 'default'
           values: image.tag=${{ github.run_id }}
