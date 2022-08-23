@@ -42,24 +42,15 @@ jobs:
           push: true
           tags: lwplapbs/nodejsapp:${{ github.run_id }}
 
-      - name: update kubeconfig
-        run: |
-          aws eks --region us-east-2 update-kubeconfig --name eks-cluster
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          AWS_DEFAULT_REGION: 'us-east-2'
-
-      - name: 'Deploy'
-        uses: 'deliverybot/helm@v1'
+      - name: Deploy
+        uses: bitovi/github-actions-deploy-eks-helm@v1.0.3
         with:
-          release: 'digital-nodeapp'
+          aws-access-key-id: ${{ secrets.AWS_SECRET }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: us-east-2
+          cluster-name: eks-cluster
+          chart-repository: https://thedevopsstore.github.io/lwplabs-charts/
+          chart-path: nodeapp
+          name: digital-nodeapp
           namespace: 'default'
-          repo: 'https://thedevopsstore.github.io/lwplabs-charts/'
-          chart: lwplabs-charts
-          values: |
-            image.tag: ${{ github.run_id }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          AWS_DEFAULT_REGION: 'us-east-2'
+          values: image.tag=${{ github.run_id }}
